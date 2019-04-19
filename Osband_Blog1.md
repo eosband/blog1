@@ -69,12 +69,27 @@ Django's HttpResponse formats and displays a string written in proper HTML style
 Now suppose we wanted to return all the information contained in a POST request sent to the same URL in the form of a Json object. We would then write the following below the `if` statement above:
 
 ```python
-else if request.method == "POST":
+if request.method == "POST":
     data = QueryDict(request.META["QUERY_STRING"]).dict()
     return JsonResponse(data)
 ```
 
-A lot of things are going on here, so let's break it down. Depending on how the request was sent, the data, which are just keys and values, may be stored in either `request`'s `META["QUERY_STRING"]` or `body` fields. `body` is much more secure than the query string, but again, in which place it was stored depends on how the request was sent. Let us assume it was stored in the query string. Then [QueryDict](https://docs.djangoproject.com/en/2.2/topics/db/queries/) unpackages the string into a `QueryDict` object, which then can be formatted into a traditional dictionary format of keys and values by calling its `dict()` method. Finally, we format this dictionary as a JsonResponse and return it to the user.
+A lot of things are going on here, so let's break it down. Depending on how the request was sent, the data, which are just keys and values, may be stored in either `request`'s `META["QUERY_STRING"]` or `body` fields. `body` is much more secure than the query string, but again, in which place it was stored depends on how the request was sent. Let us assume it was stored in the query string. Then [QueryDict](https://docs.djangoproject.com/en/2.2/topics/db/queries/) unpackages the string into a `QueryDict` object, which then can be formatted into a traditional dictionary format of keys and values by calling its `dict()` method. Finally, we format this dictionary as a JsonResponse and return it to the user. Our completed `views.py` will then look like this:
+
+```python
+from django.views import View # only if using class-based views
+from django.http import HttpResponse, JsonResponse, QueryDict
+from myapp.models import *
+
+
+def userInfo(request, user_id) {
+    if request.method == "GET":
+        return HttpResponse("<h2>" + str(user_id) + "</h2>")
+    if request.method == "POST":
+        data = QueryDict(request.META["QUERY_STRING"]).dict()
+        return JsonResponse(data)
+}
+```
 
 
 ### And... that's it!
