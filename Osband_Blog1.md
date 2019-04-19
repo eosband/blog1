@@ -83,8 +83,10 @@ from myapp.models import *
 
 
 def userInfo(request, user_id) {
+
     if request.method == "GET":
         return HttpResponse("<h2>" + str(user_id) + "</h2>")
+        
     if request.method == "POST":
         data = QueryDict(request.META["QUERY_STRING"]).dict()
         return JsonResponse(data)
