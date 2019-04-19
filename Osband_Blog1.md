@@ -97,6 +97,6 @@ def userInfo(request, user_id) {
 ### And... that's it!
 Now you know how to recieve, interpret, and return information on your server. Remember, you can test your server locally by running
 ```sh
-$ python manage.py runserver [port, usually 8000]
+$ python manage.py runserver [port - usually 8000]
 ```
 from inside the project folder. Happy coding!
